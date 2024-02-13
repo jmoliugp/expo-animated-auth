@@ -44,6 +44,7 @@ export const SignIn: RouteComponent<Route.SignIn> = ({ navigation }) => {
         {/* title */}
         <View className="flex items-center">
           <Animated.Text
+            accessibilityRole="text"
             entering={FadeInUp.duration(1000).springify()}
             className="text-5xl font-bold tracking-wider text-white">
             Sign In
@@ -71,6 +72,7 @@ export const SignIn: RouteComponent<Route.SignIn> = ({ navigation }) => {
             entering={FadeInDown.delay(400).duration(1000).springify()}
             className="w-full">
             <Pressable
+              accessibilityRole="button"
               className="w-full p-3 mb-3 bg-sky-400 rounded-2xl"
               onPress={onSignIn}>
               <Text className="text-xl font-bold text-center text-white">

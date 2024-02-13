@@ -1,21 +1,63 @@
+import { fireEvent, render } from '@testing-library/react-native'
 import React from 'react'
-import { render } from '@testing-library/react-native'
 import App from './App'
 
-const INSTRUCTIONS_TEXT = 'Open up App.tsx to start working on your app!'
+describe('Auth flows', () => {
+  describe('Sign In', () => {
+    it('boots the app within the sign-in scene', () => {
+      const title = 'Sign In'
+      const { getAllByText } = render(<App />)
 
-describe('<App />', () => {
-  it('renders the scene with the proper instructions', () => {
-    const { getByText } = render(<App />)
+      expect(getAllByText(title)).toBeTruthy()
+    })
 
-    expect(getByText(INSTRUCTIONS_TEXT)).toBeTruthy()
-  })
+    it('allows me to perform a sign-in using my credentials', async () => {
+      const { getByPlaceholderText, getByRole, findByText } = render(<App />)
+      const emailInputPlaceholder = 'Email'
+      const passwordInputPlaceholder = 'Password'
+      const signInButtonText = 'Sign In'
+      const snackBarMessage = 'Sign In Action'
 
-  it('has a white background', () => {
-    const { getByText } = render(<App />)
-    const textElement = getByText(INSTRUCTIONS_TEXT)
-    const mainView = textElement.parent?.parent
+      const emailInput = getByPlaceholderText(emailInputPlaceholder)
+      const passwordInput = getByPlaceholderText(passwordInputPlaceholder)
 
-    expect(mainView).toHaveStyle({ backgroundColor: '#fff' })
+      const signInButton = getByRole('button', { name: signInButtonText })
+
+      expect(emailInput).toBeTruthy()
+      expect(passwordInput).toBeTruthy()
+      expect(signInButton).toBeDefined()
+
+      if (!signInButton) throw new Error('Sign In button not found')
+
+      fireEvent.changeText(emailInput, 'user@example.com')
+      fireEvent.changeText(passwordInput, 'password123')
+      fireEvent.press(signInButton)
+
+      const snackBarText = await findByText(snackBarMessage)
+      const snackBarContainer = snackBarText.parent?.parent?.parent?.parent
+
+      expect(snackBarText).toBeTruthy()
+      expect(snackBarContainer).toHaveStyle({
+        left: 0,
+        right: 0,
+        position: 'absolute',
+        zIndex: 10,
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: '#000',
+      })
+    })
+
+    it('navigates to Sign-Up scene when "Don\'t have an account?" button is tapped', async () => {
+      const { findByText, getByTestId } = render(<App />)
+      const signUpText = 'Sign Up'
+      const signUpTitleTestId = 'title'
+
+      const signUpButton = await findByText(signUpText)
+      fireEvent.press(signUpButton)
+
+      const signUpTitle = getByTestId(signUpTitleTestId)
+      expect(signUpTitle.props?.children).toBe(signUpText)
+    })
   })
 })
