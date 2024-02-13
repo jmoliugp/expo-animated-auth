@@ -1,5 +1,5 @@
 import 'nativewind'
-import React from 'react'
+import React, { useState } from 'react'
 import { Image, Pressable, Text, TextInput, View } from 'react-native'
 import Animated, { FadeInDown, FadeInUp } from 'react-native-reanimated'
 import { StatusBar } from 'expo-status-bar'
@@ -8,11 +8,19 @@ import BackgroundImage from '../../assets/background.png'
 import LightImage from '../../assets/light.png'
 import { Route } from '../navigation/routes'
 import { RouteComponent } from '../navigation/types'
+import { SnackBar } from '../components/Snackbar'
 
 export const SignUp: RouteComponent<Route.SignUp> = ({ navigation }) => {
+  const [triggerKey, setTriggerKey] = useState(0)
+
+  const onSignUp = () => {
+    setTriggerKey(prevKey => prevKey + 1)
+  }
+
   return (
     <View className="w-full h-full bg-white">
       <StatusBar style="light" />
+      <SnackBar message="Sign Up Action" triggerKey={triggerKey} />
       <Image className="absolute w-full h-full" source={BackgroundImage} />
 
       {/* lights */}
@@ -34,6 +42,8 @@ export const SignUp: RouteComponent<Route.SignUp> = ({ navigation }) => {
         {/* title */}
         <View className="flex items-center">
           <Animated.Text
+            accessibilityRole="text"
+            testID="title"
             entering={FadeInUp.duration(1000).springify()}
             className="text-5xl font-bold tracking-wider text-white">
             Sign Up
@@ -65,7 +75,11 @@ export const SignUp: RouteComponent<Route.SignUp> = ({ navigation }) => {
           <Animated.View
             entering={FadeInDown.delay(600).duration(1000).springify()}
             className="w-full">
-            <Pressable className="w-full p-3 mb-3 bg-sky-400 rounded-2xl">
+            <Pressable
+              accessibilityRole="button"
+              testID="signUpButton"
+              className="w-full p-3 mb-3 bg-sky-400 rounded-2xl"
+              onPress={onSignUp}>
               <Text className="text-xl font-bold text-center text-white">
                 Sign Up
               </Text>

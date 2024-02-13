@@ -1,5 +1,5 @@
 import 'nativewind'
-import React from 'react'
+import React, { useState } from 'react'
 import { Image, Pressable, Text, TextInput, View } from 'react-native'
 import Animated, { FadeInDown, FadeInUp } from 'react-native-reanimated'
 import { StatusBar } from 'expo-status-bar'
@@ -8,11 +8,19 @@ import BackgroundImage from '../../assets/background.png'
 import LightImage from '../../assets/light.png'
 import { Route } from '../navigation/routes'
 import { RouteComponent } from '../navigation/types'
+import { SnackBar } from '../components/Snackbar'
 
 export const SignIn: RouteComponent<Route.SignIn> = ({ navigation }) => {
+  const [triggerKey, setTriggerKey] = useState(0)
+
+  const onSignIn = () => {
+    setTriggerKey(prevKey => prevKey + 1)
+  }
+
   return (
     <View className="w-full h-full bg-white">
       <StatusBar style="light" />
+      <SnackBar message="Sign In Action" triggerKey={triggerKey} />
       <Image
         className="absolute w-full h-full"
         source={BackgroundImage}></Image>
@@ -36,6 +44,7 @@ export const SignIn: RouteComponent<Route.SignIn> = ({ navigation }) => {
         {/* title */}
         <View className="flex items-center">
           <Animated.Text
+            accessibilityRole="text"
             entering={FadeInUp.duration(1000).springify()}
             className="text-5xl font-bold tracking-wider text-white">
             Sign In
@@ -62,7 +71,10 @@ export const SignIn: RouteComponent<Route.SignIn> = ({ navigation }) => {
           <Animated.View
             entering={FadeInDown.delay(400).duration(1000).springify()}
             className="w-full">
-            <Pressable className="w-full p-3 mb-3 bg-sky-400 rounded-2xl">
+            <Pressable
+              accessibilityRole="button"
+              className="w-full p-3 mb-3 bg-sky-400 rounded-2xl"
+              onPress={onSignIn}>
               <Text className="text-xl font-bold text-center text-white">
                 Sign In
               </Text>
