@@ -1,12 +1,7 @@
 import 'nativewind'
 import React from 'react'
 import { Image, Pressable, Text, TextInput, View } from 'react-native'
-import Animated, {
-  FadeIn,
-  FadeInDown,
-  FadeInUp,
-  FadeOut,
-} from 'react-native-reanimated'
+import Animated, { FadeInDown, FadeInUp } from 'react-native-reanimated'
 import { StatusBar } from 'expo-status-bar'
 
 import BackgroundImage from '../../assets/background.png'
@@ -18,7 +13,6 @@ export const SignIn: RouteComponent<Route.SignIn> = ({ navigation }) => {
   return (
     <View className="w-full h-full bg-white">
       <StatusBar style="light" />
-
       <Image
         className="absolute w-full h-full"
         source={BackgroundImage}></Image>
@@ -79,7 +73,7 @@ export const SignIn: RouteComponent<Route.SignIn> = ({ navigation }) => {
             entering={FadeInDown.delay(600).duration(1000).springify()}
             className="flex-row justify-center">
             <Text>Don't have an account? </Text>
-            <Pressable onPress={() => navigation.navigate(Route.SignUp)}>
+            <Pressable onPress={() => navigation.push(Route.SignUp)}>
               <Text className="text-sky-600">Sign Up</Text>
             </Pressable>
           </Animated.View>
