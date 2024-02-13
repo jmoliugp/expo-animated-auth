@@ -78,7 +78,7 @@ export const SignUp: RouteComponent<Route.SignUp> = ({ navigation }) => {
             <Pressable
               accessibilityRole="button"
               testID="signUpButton"
-              className="w-full p-3 mb-3 bg-sky-400 rounded-2xl"
+              className="w-full p-3 mb-3 bg-sky-400 rounded-2xl active:opacity-80"
               onPress={onSignUp}>
               <Text className="text-xl font-bold text-center text-white">
                 Sign Up
